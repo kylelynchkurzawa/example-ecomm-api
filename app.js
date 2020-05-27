@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/v1', v1Apis);
-app.use('/health', HealthCheckService);
+
 app.use('/', function(req, res){
   res.statusCode = 200;
   res.json({status: 'success', data: {}, message: 'Default endpoint contacted'});
