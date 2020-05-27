@@ -5,8 +5,9 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 // const path = require('path');
 // const cookieParser = require('cookie-parser');
+
+const dbModels = require('./models');
 const v1Apis = require('./routes/v1');
-const HealthCheckService = require('./services/HealthCheckService');
 
 let app = express();
 
@@ -15,6 +16,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+//create the db connection and initialize the models
+dbModels.init();
 
 // CORS
 app.use(function (req, res, next) {

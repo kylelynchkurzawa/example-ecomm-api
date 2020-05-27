@@ -1,5 +1,5 @@
 let dotenv = require('dotenv').config();//instantiate environment variables
-ENV = {};
+let ENV = {};
 
 ENV.api_env = process.env.API_ENV || '';
 ENV.api_port = process.env.API_PORT || '';
