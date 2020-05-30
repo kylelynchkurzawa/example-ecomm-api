@@ -17,12 +17,13 @@ const sequelize = new Sequelize(env.db_schema, env.db_user, env.db_password, {
 
 const init = function(){
     sequelize.authenticate().then(() => {
-        console.log(`Connected to the database at: ${env.db_host}:${env.db_port}`);
-        console.log(`Sequelize dialect: ${env.db_dialect}`);
-        console.log(`Database schema connected to: ${env.db_schema}`);
+        console.log(`Connected to the database at: ${env.db_host}:${env.db_port}\n`+
+            `Sequelize dialect: ${env.db_dialect}\n`+
+            `Database schema connected to: ${env.db_schema}\n`);
         initializeModels();
     }).catch(error => {
-        console.error(`Unable to connect to the database at: ${env.db_host}:${env.db_port}\n\n ${JSON.stringify(error, null, 4)}`);
+        console.error(`Unable to connect to the database at: ${env.db_host}:${env.db_port}`);
+        console.error(JSON.stringify(error, null, 4));
     })
 };
 
@@ -52,14 +53,20 @@ const initializeModels = function(){
         }
     });
 
-    if(env.api_env === 'dev'){
-        sequelize.sync();//creates table if they do not already exist
-        // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
-    }
-    else if(env.api_env === 'prod'){
-        sequelize.sync();//creates table if they do not already exist
-
-        //insert other prod only steps here
+    switch(env.api_env){
+        case('local'):
+            sequelize.sync();
+            break;
+        case('dev'):
+            sequelize.sync();//creates table if they do not already exist
+            // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
+            break;
+        case('prod'):
+            sequelize.sync();//creates table if they do not already exist
+            break;
+        default:
+            console.error(`Unknown environment: ${env.api_env}`);
+            break;
     }
 }
 
