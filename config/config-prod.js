@@ -1,3 +1,3 @@
-let configProd = {};
+const configProd = {};
 
 module.exports = configProd;
